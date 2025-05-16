@@ -37,7 +37,7 @@ config();
                 Buffer.from('ffffffff54536f7572636520456e67696e6520517565727900', 'hex'),
                 Buffer.from('ffffffff56568a543e', 'hex'),
                 Buffer.from('ffffffff5600000000', 'hex')
-            ].map(command => Request(command).then(value => client.set(`A2S:${command.toString('hex')}`, value)))
+            ].map(command => Request(command).then(value => client.set(`A2S:${command.toString('hex')}`, value, { expiration: { type: 'EX', value: 30 } })))
         )
     }
     
@@ -52,7 +52,7 @@ config();
         if(cache)
             server.send(cache, rinfo.port, rinfo.address);
         else {
-            const res: Buffer = await Request(msg);
+            const res = await Request(msg);
             client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
