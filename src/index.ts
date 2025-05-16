@@ -35,9 +35,8 @@ config();
         await Promise.all(
             [
                 Buffer.from('ffffffff54536f7572636520456e67696e6520517565727900', 'hex'),
-                Buffer.from('ffffffff56568a543e', 'hex'),
-                Buffer.from('ffffffff5600000000', 'hex')
-            ].map(command => Request(command).then(value => client.set(`A2S:${command.toString('hex')}`, value, { expiration: { type: 'EX', value: 30 } })))
+                Buffer.from('ffffffff56568a543e', 'hex')
+            ].map(command => Request(command).then(value => client.set(`A2S:${command.length}`, value, { expiration: { type: 'EX', value: 30 } })))
         )
     }
     
@@ -46,8 +45,7 @@ config();
     setInterval(FetchCache, 6000);
 
     server.on('message', async (msg, rinfo) => {
-        const key = `A2S:${msg.toString('hex')}`;
-        console.log(key, msg.length)
+        const key = `A2S:${msg.length}`;
         const cache = await client.get(key);
 
         if(cache)
