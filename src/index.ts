@@ -35,7 +35,7 @@ config();
                     return resolve(res);
                 });
             });
-            client.set(key, res, { expiration: { type: 'EX', value: 6 } });
+            client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
     });
