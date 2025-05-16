@@ -32,9 +32,7 @@ config();
     }
 
     function Transform29Buffer(buffer: Buffer): Buffer {
-        const hex = buffer.toString('hex');
-        console.log(hex);
-        return Buffer.from(hex, 'hex');
+        return Buffer.from(buffer.toString('hex').replace('2c6370302c', Buffer.from(`,cp47,`).toString('hex')), 'hex');
     }
     
     const server = createSocket('udp4');
@@ -46,8 +44,8 @@ config();
         if(cache)
             server.send(cache, rinfo.port, rinfo.address);
         else {
-            const res = await Request(msg);
-            client.set(`DEBUG:${msg.toString('hex')}`, msg.length === 29 ? Transform29Buffer(res) : res, { expiration: { type: 'EX', value: 600 } });
+            const res = (msg.length === 29) ? Transform29Buffer(await Request(msg)) : await Request(msg);
+            client.set(`DEBUG:${msg.toString('hex')}`, res, { expiration: { type: 'EX', value: 600 } });
             client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
