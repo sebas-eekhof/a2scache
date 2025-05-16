@@ -32,7 +32,11 @@ config();
     }
 
     function Transform29Buffer(buffer: Buffer): Buffer {
-        return Buffer.from(buffer.toString('hex').replace('2c6370302c', Buffer.from(`,cp47,`).toString('hex')), 'hex');
+        return Buffer.from(
+            buffer.toString('hex')
+                .replace('2c6370302c', Buffer.from(`,cp47,`).toString('hex'))
+                .replace('\x00\x00d', 'asd')
+            , 'hex');
     }
     
     const server = createSocket('udp4');
