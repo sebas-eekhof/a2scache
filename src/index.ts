@@ -30,14 +30,6 @@ config();
             });
         });
     }
-
-    function Transform29Buffer(buffer: Buffer): Buffer {
-        return Buffer.from(
-            buffer.toString('hex')
-                .replace('2c6370302c', Buffer.from(`,cp47,`).toString('hex'))
-                .replace('00000000', '0000002f')
-            , 'hex');
-    }
     
     const server = createSocket('udp4');
 
@@ -48,7 +40,7 @@ config();
         if(cache)
             server.send(cache, rinfo.port, rinfo.address);
         else {
-            const res = (msg.length === 29) ? Transform29Buffer(await Request(msg)) : await Request(msg);
+            const res = await Request(msg);
             client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
