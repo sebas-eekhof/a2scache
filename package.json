@@ -1,0 +1,23 @@
+{
+  "name": "steamquery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc && tsc-alias",
+    "start": "node ./dist/index.js",
+    "dev": "rimraf dist && tsc-watch --onCompilationComplete \"tsc-alias\" --onSuccess \"node ./dist/index.js\"",
+    "test": "yarn build && yarn start"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.16",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "redis": "^5.0.1"
+  }
+}
