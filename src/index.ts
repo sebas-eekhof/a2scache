@@ -42,7 +42,7 @@ config();
 
     server.on('listening', () => {
         const address = server.address();
-        console.log(`UDP cache server luistert op ${address.address}:${address.port}`);
+        console.log(`A2S Cache Server listening on ${address.address}:${address.port}`);
     });
 
     server.bind(27017);
