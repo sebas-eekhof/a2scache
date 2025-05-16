@@ -47,6 +47,7 @@ config();
 
     server.on('message', async (msg, rinfo) => {
         const key = `A2S:${msg.toString('hex')}`;
+        console.log(key, msg.length)
         const cache = await client.get(key);
 
         if(cache)
