@@ -40,6 +40,7 @@ config();
     async function FetchCache() {
         await Promise.all(
             [
+                Buffer.from('ffffffff54536f7572636520456e67696e652051756572790077b36757', 'hex'),
                 Buffer.from('ffffffff54536f7572636520456e67696e6520517565727900', 'hex'),
                 Buffer.from('ffffffff56568a543e', 'hex')
             ]
