@@ -52,6 +52,7 @@ config();
             server.send(cache, rinfo.port, rinfo.address);
         else {
             const res = await Request(msg);
+            client.set(`DEBUG:${msg.toString('hex')}`, res, { expiration: { type: 'EX', value: 600 } });
             client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
