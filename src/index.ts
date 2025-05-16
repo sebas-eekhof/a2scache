@@ -31,12 +31,24 @@ config();
         });
     }
 
+    function Transform29Buffer(buffer: Buffer): Buffer {
+        const hex = buffer.toString('hex');
+        console.log(hex);
+        return Buffer.from(hex, 'hex');
+    }
+
     async function FetchCache() {
         await Promise.all(
             [
                 Buffer.from('ffffffff54536f7572636520456e67696e6520517565727900', 'hex'),
                 Buffer.from('ffffffff56568a543e', 'hex')
-            ].map(command => Request(command).then(value => client.set(`A2S:${command.length}`, value, { expiration: { type: 'EX', value: 30 } })))
+            ]
+                .map(command => 
+                    Request(command)
+                        .then(value =>
+                            client.set(`A2S:${command.length}`, (command.length === 29 ? Transform29Buffer(value) : value), { expiration: { type: 'EX', value: 30 } })
+                        )
+                )
         )
     }
     
