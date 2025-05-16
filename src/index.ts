@@ -36,26 +36,8 @@ config();
         console.log(hex);
         return Buffer.from(hex, 'hex');
     }
-
-    async function FetchCache() {
-        await Promise.all(
-            [
-                Buffer.from('ffffffff54536f7572636520456e67696e652051756572790077b36757', 'hex'),
-                Buffer.from('ffffffff54536f7572636520456e67696e6520517565727900', 'hex'),
-                Buffer.from('ffffffff56568a543e', 'hex')
-            ]
-                .map(command => 
-                    Request(command)
-                        .then(value =>
-                            client.set(`A2S:${command.length}`, (command.length === 29 ? Transform29Buffer(value) : value), { expiration: { type: 'EX', value: 30 } })
-                        )
-                )
-        )
-    }
     
     const server = createSocket('udp4');
-
-    setInterval(FetchCache, 6000);
 
     server.on('message', async (msg, rinfo) => {
         const key = `A2S:${msg.length}`;
@@ -65,7 +47,7 @@ config();
             server.send(cache, rinfo.port, rinfo.address);
         else {
             const res = await Request(msg);
-            client.set(`DEBUG:${msg.toString('hex')}`, res, { expiration: { type: 'EX', value: 600 } });
+            client.set(`DEBUG:${msg.toString('hex')}`, res.length === 29 ? Transform29Buffer(res) : res, { expiration: { type: 'EX', value: 600 } });
             client.set(key, res, { expiration: { type: 'EX', value: 30 } });
             server.send(res, rinfo.port, rinfo.address);
         }
