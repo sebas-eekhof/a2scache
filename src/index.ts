@@ -35,7 +35,7 @@ config();
         return Buffer.from(
             buffer.toString('hex')
                 .replace('2c6370302c', Buffer.from(`,cp47,`).toString('hex'))
-                .replace('\x00\x00d', '\x00\x2Fd')
+                .replace('00000000', '0000002f')
             , 'hex');
     }
     
